@@ -8,7 +8,6 @@ import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform'
 import { VAxios } from './Axios'
 import { checkStatus } from './checkStatus'
 import { useGlobSetting } from '@/hooks/setting'
-import { useMessage } from '@/hooks/web/useMessage'
 import { RequestEnum, ResultEnum, ContentTypeEnum } from '@/enums/httpEnum'
 import { isString } from '@/utils/is'
 import { getToken } from '@/utils/auth'
@@ -20,7 +19,6 @@ import { AxiosRetry } from '@/utils/http/axios/axiosRetry'
 
 const globSetting = useGlobSetting()
 const urlPrefix = globSetting.urlPrefix
-const { createMessage, createErrorModal } = useMessage()
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -74,11 +72,11 @@ const transform: AxiosTransform = {
 
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
-    if (options.errorMessageMode === 'modal') {
-      createErrorModal({ title: '错误提示', content: timeoutMsg })
-    } else if (options.errorMessageMode === 'message') {
-      createMessage.error(timeoutMsg)
-    }
+    // if (options.errorMessageMode === 'modal') {
+    //   createErrorModal({ title: '错误提示', content: timeoutMsg })
+    // } else if (options.errorMessageMode === 'message') {
+    //   createMessage.error(timeoutMsg)
+    // }
 
     throw new Error(timeoutMsg || 'Error')
   },
@@ -177,11 +175,11 @@ const transform: AxiosTransform = {
       }
 
       if (errMessage) {
-        if (errorMessageMode === 'modal') {
-          createErrorModal({ title: '错误提示', content: errMessage })
-        } else if (errorMessageMode === 'message') {
-          createMessage.error(errMessage)
-        }
+        // if (errorMessageMode === 'modal') {
+        //   createErrorModal({ title: '错误提示', content: errMessage })
+        // } else if (errorMessageMode === 'message') {
+        //   createMessage.error(errMessage)
+        // }
         return Promise.reject(error)
       }
     } catch (error) {
