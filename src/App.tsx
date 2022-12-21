@@ -30,7 +30,6 @@ const App: React.FC = () => {
 			</div>
 			<p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
 			<DatePicker />
-			<video src='/assets/ant.mp4' autoPlay loop muted />
 		</div>
 	)
 }
