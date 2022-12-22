@@ -3,15 +3,30 @@ import reactLogo from './assets/react.svg'
 import './App.css'
 import { DatePicker, Button, Space } from 'antd'
 import { playlistApi } from './api/player/player'
+function MyButton() {
+	return <Button>I'm a button</Button>
+}
+function LikeButton() {
+	const [liked, setLiked] = useState(false)
+
+	if (liked) {
+		console.log('liked1111111')
+
+		return <div onClick={() => setLiked(false)}>NotLike</div>;
+	}
+
+	return (<Button onClick={() => setLiked(true)}>liked</Button>)
+}
+const user = {
+	name: 'Hedy',
+	imageUrl: 'https://t11.baidu.com/it/u=3005961094,4112124005&fm=58',
+	imageSize: 99,
+}
 const App: React.FC = () => {
 	const [count, setCount] = useState(0)
-	let list = []
-	playlistApi().then((res) => {
-		console.log(res)
-		list = res
-	})
 	return (
 		<div className='App'>
+			<LikeButton></LikeButton>
 			<div>
 				<a href='https://vitejs.dev' target='_blank'>
 					<img src='/vite.svg' className='logo' alt='Vite logo' />
@@ -21,6 +36,13 @@ const App: React.FC = () => {
 				</a>
 			</div>
 			<h1>Vite + React</h1>
+			<MyButton />
+			<img
+				className='avatar'
+				src={user.imageUrl}
+				alt={user.name}
+				style={{ width: user.imageSize, height: user.imageSize }}
+			></img>
 			<div className='card'>
 				<Space wrap>
 					<Button type='primary' onClick={() => setCount((count) => count + 1)}>
