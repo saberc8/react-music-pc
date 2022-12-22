@@ -211,25 +211,9 @@ export class VAxios {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)
         .then((res: AxiosResponse<Result>) => {
-          if (transformResponseHook && isFunction(transformResponseHook)) {
-            try {
-              const ret = transformResponseHook(res, opt)
-              resolve(ret)
-            } catch (err) {
-              reject(err || new Error('request error!'))
-            }
-            return
-          }
           resolve(res as unknown as Promise<T>)
         })
         .catch((e: Error | AxiosError) => {
-          if (requestCatchHook && isFunction(requestCatchHook)) {
-            reject(requestCatchHook(e, opt))
-            return
-          }
-          if (axios.isAxiosError(e)) {
-            // rewrite error message from axios in here
-          }
           reject(e)
         })
     })

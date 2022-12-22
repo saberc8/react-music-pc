@@ -2,9 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import { DatePicker, Button, Space } from 'antd'
+import { playlistApi } from './api/player/player'
 const App: React.FC = () => {
 	const [count, setCount] = useState(0)
-
+	let list = []
+	playlistApi().then((res) => {
+		console.log(res)
+		list = res
+	})
 	return (
 		<div className='App'>
 			<div>

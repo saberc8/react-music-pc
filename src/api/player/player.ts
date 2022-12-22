@@ -1,15 +1,15 @@
 import { defHttp } from '@/utils/http/axios'
-import { GetAccountInfoModel } from './model/accountModel'
+import { GetPlayerModel } from './model/playerModel'
 
 enum Api {
-  ACCOUNT_INFO = '/account/getAccountInfo',
+  PLAYERLIST = '/playlist/hot',
   SESSION_TIMEOUT = '/user/sessionTimeout',
   TOKEN_EXPIRED = '/user/tokenExpired',
 }
 
 // Get personal center-basic settings
 
-export const accountInfoApi = () => defHttp.get<GetAccountInfoModel>({ url: Api.ACCOUNT_INFO })
+export const playlistApi = () => defHttp.get({ url: Api.PLAYERLIST })
 
 export const sessionTimeoutApi = () => defHttp.post<void>({ url: Api.SESSION_TIMEOUT })
 

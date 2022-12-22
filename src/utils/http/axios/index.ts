@@ -10,11 +10,9 @@ import { checkStatus } from './checkStatus'
 import { useGlobSetting } from '@/hooks/setting'
 import { RequestEnum, ResultEnum, ContentTypeEnum } from '@/enums/httpEnum'
 import { isString } from '@/utils/is'
-import { getToken } from '@/utils/auth'
 import { setObjToUrlParams, deepMerge } from '@/utils'
 
 import { joinTimestamp, formatRequestDate } from './helper'
-import { useUserStoreWithOut } from '@/store/modules/user'
 import { AxiosRetry } from '@/utils/http/axios/axiosRetry'
 
 const globSetting = useGlobSetting()
@@ -60,9 +58,6 @@ const transform: AxiosTransform = {
     switch (code) {
       case ResultEnum.TIMEOUT:
         timeoutMsg = '登录超时，请重新登录'
-        const userStore = useUserStoreWithOut()
-        userStore.setToken(undefined)
-        userStore.logout(true)
         break
       default:
         if (message) {
@@ -84,7 +79,7 @@ const transform: AxiosTransform = {
   // 请求之前处理config
   beforeRequestHook: (config, options) => {
     const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true, urlPrefix } = options
-
+    
     if (joinPrefix) {
       config.url = `${urlPrefix}${config.url}`
     }
@@ -139,13 +134,13 @@ const transform: AxiosTransform = {
    */
   requestInterceptors: (config, options) => {
     // 请求之前处理config
-    const token = getToken()
-    if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
-      // jwt token
-      ;(config as Recordable).headers.Authorization = options.authenticationScheme
-        ? `${options.authenticationScheme} ${token}`
-        : token
-    }
+    // const token = getToken()
+    // if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
+    //   // jwt token
+    //   ;(config as Recordable).headers.Authorization = options.authenticationScheme
+    //     ? `${options.authenticationScheme} ${token}`
+    //     : token
+    // }
     return config
   },
 
@@ -153,7 +148,7 @@ const transform: AxiosTransform = {
    * @description: 响应拦截器处理
    */
   responseInterceptors: (res: AxiosResponse<any>) => {
-    return res
+    return res.data
   },
 
   /**
@@ -232,9 +227,9 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           // 消息提示类型
           errorMessageMode: 'message',
           // 接口地址
-          apiUrl: globSetting.apiUrl,
+          apiUrl: 'http://localhost:3000',
           // 接口拼接地址
-          urlPrefix: urlPrefix,
+          urlPrefix: '',
           //  是否加入时间戳
           joinTime: true,
           // 忽略重复请求
